@@ -1,7 +1,7 @@
 module EarthquakesMicroservice.Dependencies
 
 open System.Net.Http
-open EarthquakesMicroservice.Api.HttpClientWrapper
+open EarthquakesMicroservice.Services.HttpClientWrapper
 
 
 let configureDependencies () =

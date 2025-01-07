@@ -1,6 +1,8 @@
 module EarthquakesMicroservice.Program
 
 open System
+open EarthquakesMicroservice.Api
+open EarthquakesMicroservice.Services.EarthquakesService
 open EarthquakesMicroservice.Dependencies
 open Microsoft.AspNetCore
 open Microsoft.AspNetCore.Builder
@@ -41,8 +43,9 @@ let webApp fetchList fetchOne predict =
 
 let configureApp (app: IApplicationBuilder) =
     let httpClientWrapper = configureDependencies()
-    let fetchList () = httpClientWrapper.GetEarthquakesListAsync()
-    let fetchOne id = httpClientWrapper.GetEarthquakeAsyncById(id)
+    let earthQuakesService = new EarthquakesService(httpClientWrapper)
+    let fetchList () = earthQuakesService.GetEarthquakeListAsync()
+    let fetchOne id = earthQuakesService.GetEarthquakeByIdAsync(id)
     let predict () = task { return "Prediction data" }
     
     // todo how http handlers work 

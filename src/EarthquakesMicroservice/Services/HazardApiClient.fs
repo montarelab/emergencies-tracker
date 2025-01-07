@@ -1,4 +1,4 @@
-module EarthquakesMicroservice.Api.HttpClientWrapper
+module EarthquakesMicroservice.Services.HttpClientWrapper
 
 open System
 open System.Net.Http
@@ -7,7 +7,7 @@ open Giraffe.ComputationExpressions
 open Newtonsoft.Json
 // open FSharp.Control.Tasks.V2.ContextInsensitive
 
-type EarthquakeDto = {
+type EarthquakeApiDto = {
     id: string
     area: string
     country: string
@@ -17,8 +17,8 @@ type EarthquakeDto = {
     date: DateTime
 }
 
-type PagedResponse = {
-    items: EarthquakeDto list
+type PagedApiResponse = {
+    items: EarthquakeApiDto list
     page: int
     itemsPerPage: int
     totalPages: int
@@ -40,10 +40,10 @@ type EarthquakesHttpClientWrapper(httpClient: HttpClient, baseUrl: string) =
         return JsonConvert.DeserializeObject<'T>(data)
     }
     
-    member this.GetEarthquakesListAsync(): Task<PagedResponse> =
-        this.GetAsync<PagedResponse>(earthquakesListEndpoint)
+    member this.GetEarthquakesListAsync(): Task<PagedApiResponse> =
+        this.GetAsync<PagedApiResponse>(earthquakesListEndpoint)
         
 
-    member this.GetEarthquakeAsyncById(id: string): Task<EarthquakeDto> = 
-        this.GetAsync<EarthquakeDto>(earthquakeByIdEndpoint id)
+    member this.GetEarthquakeAsyncById(id: string): Task<EarthquakeApiDto> = 
+        this.GetAsync<EarthquakeApiDto>(earthquakeByIdEndpoint id)
     

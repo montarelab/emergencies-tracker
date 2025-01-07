@@ -1,4 +1,4 @@
-module TrackEmergencies.Modelling.Predictor
+module EarthquakesMicroservice.Modelling.Predictor
 
 // todo: how we can problem best
 

@@ -1,9 +1,9 @@
 module EarthquakesMicroservice.Api.Endpoints
 
 open System.Threading.Tasks
-open EarthquakesMicroservice.Api.HttpClientWrapper
 open Giraffe
 open Microsoft.AspNetCore.Http
+open EarthquakesMicroservice.Services.EarthquakesService
 
 // todo how to make best endpoints
 // todo how to use real time data sending
