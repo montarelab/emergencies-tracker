@@ -4,6 +4,11 @@ open System.Threading.Tasks
 open Giraffe
 open Microsoft.AspNetCore.Http
 
+// todo how to make best endpoints
+// todo how to use real time data sending
+// todo how to use websockets
+
+
 let getCurrentEarthquakes (fetchData: unit -> Task<string>) = 
     fun (next: HttpFunc) (ctx: HttpContext) -> task {
         let! data = fetchData()
