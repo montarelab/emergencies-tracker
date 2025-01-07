@@ -21,8 +21,8 @@
     <Compile Include="Modelling\Predictor.fs" />
     <Compile Include="Api\HazardApiClient.fs" />
     <Compile Include="Api\Endpoints.fs" />
+    <Compile Include="Api\EarthquakesService.fs" />
     <Compile Include="Dependencies.fs" />
-    <Compile Include="App.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 </Project>

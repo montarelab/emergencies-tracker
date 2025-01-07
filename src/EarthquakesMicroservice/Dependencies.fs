@@ -6,6 +6,6 @@ open EarthquakesMicroservice.Api.HttpClientWrapper
 
 let configureDependencies () =
     let httpClient = new HttpClient()
-    let baseUrl = "https://api.example.com"
-    let httpClientWrapper = HttpClientWrapper(httpClient, baseUrl)
+    let baseUrl = "https://www.ngdc.noaa.gov/hazel/hazard-service/api/v1/earthquakes"
+    let httpClientWrapper = EarthquakesHttpClientWrapper(httpClient, baseUrl)
     httpClientWrapper

@@ -1,6 +1,7 @@
 module EarthquakesMicroservice.Api.Endpoints
 
 open System.Threading.Tasks
+open EarthquakesMicroservice.Api.HttpClientWrapper
 open Giraffe
 open Microsoft.AspNetCore.Http
 
@@ -9,7 +10,15 @@ open Microsoft.AspNetCore.Http
 // todo how to use websockets
 
 
-let getCurrentEarthquakes (fetchData: unit -> Task<string>) = 
+// 2 functions are endpoints that return HttpHandler (take next and cts)
+
+let getEarthquakeList (fetchData: unit -> Task<PagedResponse>) = 
+    fun (next: HttpFunc) (ctx: HttpContext) -> task {
+        let! data = fetchData()
+        return! json data next ctx
+    }
+    
+let getEarthquakeById (fetchData: unit -> Task<EarthquakeDto>) = 
     fun (next: HttpFunc) (ctx: HttpContext) -> task {
         let! data = fetchData()
         return! json data next ctx
