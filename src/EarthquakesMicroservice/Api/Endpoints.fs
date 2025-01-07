@@ -1,4 +1,4 @@
-module TrackEmergencies.Api.Endpoints
+module EarthquakesMicroservice.Api.Endpoints
 
 open System.Threading.Tasks
 open Giraffe

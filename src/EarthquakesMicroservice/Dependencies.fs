@@ -1,7 +1,7 @@
-module TrackEmergencies.Dependencies
+module EarthquakesMicroservice.Dependencies
 
 open System.Net.Http
-open TrackEmergencies.Api.HttpClientWrapper
+open EarthquakesMicroservice.Api.HttpClientWrapper
 
 
 let configureDependencies () =

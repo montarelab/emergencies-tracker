@@ -1,7 +1,7 @@
-module TrackEmergencies.App
+module EarthquakesMicroservice.App
 
 open Giraffe
-open TrackEmergencies.Api.Endpoints
+open EarthquakesMicroservice.Api.Endpoints
 
 // add routes
 

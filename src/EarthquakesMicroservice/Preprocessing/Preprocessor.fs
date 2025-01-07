@@ -1,4 +1,4 @@
-module TrackEmergencies.Preprocessing.Preprocessor
+module EarthquakesMicroservice.Preprocessing.Preprocessor
 
 // todo fix problem
 // todo how can we preprocess best

@@ -1,4 +1,4 @@
-module TrackEmergencies.Api.HttpClientWrapper
+module EarthquakesMicroservice.Api.HttpClientWrapper
 
 open System.Net.Http
 open System.Threading.Tasks

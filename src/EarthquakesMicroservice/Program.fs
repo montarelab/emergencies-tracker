@@ -1,11 +1,11 @@
-module TrackEmergencies.Program
+module EarthquakesMicroservice.Program
 
 open Microsoft.AspNetCore
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
-open TrackEmergencies.App
+open EarthquakesMicroservice.App
 
 let configureServices (services: IServiceCollection) =
     services.AddGiraffe() |> ignore
