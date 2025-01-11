@@ -1,8 +1,5 @@
 import { Routes } from '@angular/router';
-
-const routes: Routes = [
-  { path: '', component: MapViewComponent },
-  { path: 'control-panel', component: ControlPanelComponent },
-];
+import { MapViewComponent } from './features/map-view/map-view.component';
+import { ControlPanelComponent } from './features/control-panel/control-panel.component';
 
 export const routes: Routes = [];

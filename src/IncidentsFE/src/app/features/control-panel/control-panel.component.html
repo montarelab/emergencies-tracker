@@ -1,5 +1,102 @@
-<p>control-panel works!</p>
-<div fxLayout="row" fxLayoutAlign="start stretch">
-  <app-control-panel fxFlex="20"></app-control-panel>
-  <app-map-view fxFlex="80"></app-map-view>
+<style>
+  .control-panel-block {
+    display: inline-flex;
+    padding: 10px 5px;
+    flex-direction: column;
+    gap: 14px;
+    flex-shrink: 0;
+    height: 100vh;
+    border-right: 1px solid var(--Divider-2, #32383e);
+    background: var(--Background-NeutralSoft, #171a1c);
+    color: #fff;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .control-panel-header {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    gap: 6px;
+    text-align: center;
+    font-family: Roboto;
+  }
+
+  .mat-expansion-panel:not(.mat-expanded)
+    .mat-expansion-panel-header:not([aria-disabled="true"]):hover {
+    background-color: var(--Background-NeutralSoft, #171a1c);
+  }
+
+  .mat-expansion-panel {
+    background-color: var(--Background-NeutralSoft, #171a1c);
+    color: #fff;
+
+    border: 1px solid var(--Divider-2, #32383e);
+  }
+
+  .mat-expansion-panel > * {
+    width: 100%;
+  }
+</style>
+
+<div class="control-panel-block">
+  <div class="control-panel-header">
+    <mat-icon
+      aria-hidden="false"
+      aria-label="Example home icon"
+      fontIcon="public"
+    />
+    <h5>IncidentsTracker</h5>
+  </div>
+
+  <div>Control panel</div>
+
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Phenomenons </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="d-flex" style="flex-direction: column; gap: 16px">
+      <p>Select a natural phenomenon to explore its details and impact.</p>
+
+      <mat-slide-toggle class="example-margin"> Volcanos</mat-slide-toggle>
+      <mat-slide-toggle class="example-margin"> Hurricanes </mat-slide-toggle>
+      <mat-slide-toggle class="example-margin"> Earthquakes </mat-slide-toggle>
+
+      <div class="d-flex row" style="flex-direction: row-reverse">
+        <button mat-flat-button class="col-3">Apply</button>
+      </div>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Mode </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="d-flex" style="flex-direction: column; gap: 16px">
+      <p>Select the mode and time frame to view or predict earthquake data..</p>
+
+      <mat-radio-group aria-label="Select an option">
+        <mat-radio-button value="1">Current</mat-radio-button>
+        <mat-radio-button value="2">Predict</mat-radio-button>
+      </mat-radio-group>
+
+      <mat-form-field>
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="Start date" />
+          <input matEndDate placeholder="End date" />
+        </mat-date-range-input>
+        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+      <div class="d-flex row" style="flex-direction: row-reverse">
+        <button mat-flat-button class="col-3">Apply</button>
+      </div>
+    </div>
+  </mat-expansion-panel>
 </div>

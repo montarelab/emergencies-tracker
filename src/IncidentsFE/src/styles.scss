@@ -1,20 +1,41 @@
-@import "~@angular/material/theming";
-
-@include mat-core();
-
-// Define custom palettes
-$primary: mat-palette($mat-indigo);
-$accent: mat-palette($mat-pink);
-$theme: mat-light-theme($primary, $accent);
-
-// Include the theme
-@include angular-material-theme($theme);
+@use "@angular/material" as mat;
 
 html,
 body {
   height: 100%;
 }
+html {
+  color-scheme: dark;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$violet-palette,
+        tertiary: mat.$orange-palette,
+        theme-type: dark,
+      ),
+      typography: (
+        plain-family: Roboto,
+        brand-family: Open Sans,
+        bold-weight: 900,
+        medium-weight: 500,
+        regular-weight: 300,
+      ),
+      density: 0,
+    )
+  );
+}
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0px;
+  margin-bottom: 0px !important;
 }
