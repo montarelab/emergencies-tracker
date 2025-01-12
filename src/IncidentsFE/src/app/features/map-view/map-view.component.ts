@@ -13,7 +13,6 @@ import { DetailsPopupComponent } from '../details-popup/details-popup.component'
 import { icon } from 'leaflet';
 import { MatButtonModule } from '@angular/material/button';
 import { EarthquakesService } from '../../services/earthquakes-service';
-
 import {
   ComponentFactoryResolver,
   Injector,
@@ -23,11 +22,33 @@ import {
 
 // const popupOptions = new PopupOptions({ maxWidth: 500 });
 
-const customIcon = icon({
-  iconUrl: 'path/to/icon.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
+const incidentIcon = `<div
+  class="d-flex"
+  style="
+    width: 35px;
+    height: 35px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 17.5px;
+    background: rgba(255, 0, 0, 0.5);
+  "
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="15"
+    height="15"
+    viewBox="0 0 15 15"
+    fill="#F00"
+  >
+    <circle cx="7.5" cy="7.5" r="7.5" fill="#FF0000" />
+  </svg>
+</div>`;
+const customIcon = L.divIcon({
+  className: '', // Add a class for styling
+  html: incidentIcon,
+  iconSize: [30, 30], // Size of the icon
+  iconAnchor: [15, 15], // Anchor point of the icon
 });
 
 @Component({
@@ -79,7 +100,15 @@ export class MapViewComponent implements OnInit {
     `;
 
     // Add a marker
-    marker([51.5, -0.09]).addTo(this.map).bindPopup(generatePopupContent(data));
+    // marker([51.5, -0.09]).addTo(this.map).bindPopup(generatePopupContent(data));
+
+    // const customIcon = L.divIcon({
+    //   className: 'custom-icon', // Add a class for styling
+    //   html: `<div style="background-color: #ff6f61; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">A</div>`,
+    //   iconSize: [30, 30], // Size of the icon
+    //   iconAnchor: [15, 15], // Anchor point of the icon
+    // });
+    L.marker([51.505, -0.09], { icon: customIcon }).addTo(this.map);
 
     const popupFactory = this.resolver.resolveComponentFactory(
       DetailsPopupComponent

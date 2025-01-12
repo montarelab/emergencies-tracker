@@ -94,12 +94,20 @@
     >
       <p>Select a natural phenomenon to explore its details and impact.</p>
 
-      <mat-slide-toggle class="example-margin"> Volcanos</mat-slide-toggle>
-      <mat-slide-toggle class="example-margin"> Hurricanes </mat-slide-toggle>
-      <mat-slide-toggle class="example-margin"> Earthquakes </mat-slide-toggle>
+      <mat-slide-toggle class="example-margin" [(ngModel)]="volcanos">
+        Volcanos</mat-slide-toggle
+      >
+      <mat-slide-toggle class="example-margin" [(ngModel)]="hurricanes">
+        Hurricanes
+      </mat-slide-toggle>
+      <mat-slide-toggle class="example-margin" [(ngModel)]="earthquakes">
+        Earthquakes
+      </mat-slide-toggle>
 
       <div class="d-flex row" style="flex-direction: row-reverse">
-        <button mat-flat-button class="col-3">Apply</button>
+        <button mat-flat-button class="col-3" (click)="applyPhenomenons()">
+          Apply
+        </button>
       </div>
     </div>
   </mat-expansion-panel>
@@ -112,18 +120,26 @@
       class="d-flex"
       style="flex-direction: column; gap: 16px; padding-top: 16px"
     >
-      <p>Select the mode and time frame to view or predict earthquake data..</p>
+      <p>Select the mode and time frame to view or predict earthquake data.</p>
 
-      <mat-radio-group aria-label="Select an option">
-        <mat-radio-button value="1">Current</mat-radio-button>
-        <mat-radio-button value="2">Predict</mat-radio-button>
+      <mat-radio-group aria-label="Select an option" [(ngModel)]="mode">
+        <mat-radio-button style="display: block" value="1"
+          >Current</mat-radio-button
+        >
+        <mat-radio-button style="display: block" value="2"
+          >Predict</mat-radio-button
+        >
       </mat-radio-group>
 
       <mat-form-field>
         <mat-label>Enter a date range</mat-label>
-        <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate placeholder="Start date" />
-          <input matEndDate placeholder="End date" />
+        <mat-date-range-input [rangePicker]="picker" [formGroup]="dateRange">
+          <input
+            matStartDate
+            placeholder="Start date"
+            formControlName="start"
+          />
+          <input matEndDate placeholder="End date" formControlName="end" />
         </mat-date-range-input>
         <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle
@@ -134,7 +150,9 @@
       </mat-form-field>
 
       <div class="d-flex row" style="flex-direction: row-reverse">
-        <button mat-flat-button class="col-3">Apply</button>
+        <button mat-flat-button class="col-3" (click)="applyMode()">
+          Apply
+        </button>
       </div>
     </div>
   </mat-expansion-panel>

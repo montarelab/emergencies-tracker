@@ -63,3 +63,15 @@ h6 {
 .leaflet-container a.leaflet-popup-close-button {
   color: 1px solid #757575;
 }
+
+.leaflet-layer,
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out,
+.leaflet-control-attribution {
+  filter: invert(100%) hue-rotate(205deg) brightness(80%) contrast(90%);
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  border-radius: 12px;
+  background: var(--Surface-Container-High, #1d2024) !important;
+}
