@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { DetailsPopupComponent } from '../details-popup/details-popup.component';
 import { icon } from 'leaflet';
 import { MatButtonModule } from '@angular/material/button';
+import { EarthquakesService } from '../../services/earthquakes-service';
 
 import {
   ComponentFactoryResolver,
@@ -39,11 +40,17 @@ export class MapViewComponent implements OnInit {
   constructor(
     private resolver: ComponentFactoryResolver,
     private injector: Injector,
-    private appRef: ApplicationRef
+    private appRef: ApplicationRef,
+    private earthquakeService: EarthquakesService
   ) {}
   private map!: Map;
+  earthquakes: any[] | null = null;
+  selectedEarthquake: any | null = null;
 
   ngOnInit() {
+    this.earthquakeService.getEarthquakeList().subscribe((data) => {
+      this.earthquakes = data;
+    });
     // Initialize the map
     this.map = new Map('map').setView([51.505, -0.09], 13);
 
@@ -118,5 +125,11 @@ export class MapViewComponent implements OnInit {
     ])
       .addTo(this.map)
       .bindPopup('This is a polygon!');
+  }
+
+  fetchDetails(id: string) {
+    this.earthquakeService.getEarthquakeById(id).subscribe((data) => {
+      this.selectedEarthquake = data;
+    });
   }
 }
