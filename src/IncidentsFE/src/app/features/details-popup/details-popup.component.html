@@ -1,1 +1,46 @@
-<p>details-popup works!</p>
+<style>
+  .mat-divider {
+    border-top-color: var(--Divider-2, #32383e);
+  }
+
+  .mat-mdc-card {
+    background: var(--Surface-Container-High, #1d2024);
+    color: #fff;
+    box-shadow: none;
+    /* border: 1px solid var(--Divider-2, #32383e); */
+  }
+</style>
+
+<mat-card>
+  <mat-card-header style="padding: 12px 16px">
+    <mat-card-title
+      style="
+        color: #dcdcdc;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 12px;
+      "
+    >
+      Yunnan Tremor 2024
+    </mat-card-title>
+    <mat-card-subtitle style="color: #757575; font-size: 14px"
+      >Shook of the northwestern region of China</mat-card-subtitle
+    >
+  </mat-card-header>
+  <mat-divider></mat-divider>
+
+  <mat-card-content style="padding: 12px 16px">
+    <b>Attitude:</b> 25.03° N <br />
+    <b>Longitude:</b> 101.54° E<br />
+    <b>Magnitude: </b>6.8<br />
+
+    <b>Region: </b>Yunnan Province, near Dali City <br />
+    <b>Deaths: </b>52
+    <!-- </p> -->
+  </mat-card-content>
+  <mat-divider></mat-divider>
+
+  <mat-card-actions>
+    <button mat-button>READ MORE DETAILS</button>
+  </mat-card-actions>
+</mat-card>

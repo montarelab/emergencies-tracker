@@ -5,7 +5,7 @@
     flex-direction: column;
     gap: 14px;
     flex-shrink: 0;
-    height: 100vh;
+    min-height: 100vh;
     border-right: 1px solid var(--Divider-2, #32383e);
     background: var(--Background-NeutralSoft, #171a1c);
     color: #fff;
@@ -22,16 +22,49 @@
     font-family: Roboto;
   }
 
-  .mat-expansion-panel:not(.mat-expanded)
+  .mat-expansion-panel:has(.mat-expanded)
+    .mat-expansion-panel-header:not([aria-disabled="true"]) {
+    background-color: var(--Background-NeutralSoft, #171a1c);
+  }
+
+  .mat-expansion-panel:has(.mat-expanded)
     .mat-expansion-panel-header:not([aria-disabled="true"]):hover {
     background-color: var(--Background-NeutralSoft, #171a1c);
   }
 
-  .mat-expansion-panel {
-    background-color: var(--Background-NeutralSoft, #171a1c);
-    color: #fff;
+  .mat-expansion-panel:not(.mat-expanded)
+    .mat-expansion-panel-header:not([aria-disabled="true"]):hover {
+    background: var(--Surface-Container-High, #1d2024);
+  }
 
+  .mat-expansion-panel-header {
+    background-color: var(--Background-NeutralSoft, #171a1c);
+    border-radius: 0;
+  }
+
+  .mat-expansion-panel:not(.mat-expanded)
+    .mat-expansion-panel-header:not([aria-disabled="true"]) {
+    background-color: var(--Background-NeutralSoft, #171a1c);
+
+    /* background-color: var(--Background-NeutralSoft, #171a1c); */
+  }
+
+  .mat-expansion-panel,
+  .mat-mdc-card {
+    background: var(--Surface-Container-High, #1d2024);
+    color: #fff;
     border: 1px solid var(--Divider-2, #32383e);
+  }
+
+  .mat-expansion-panel-body {
+    /* padding: 0 !important; */
+    padding-top: 15px;
+    color: #fff;
+    background: var(--Surface-Container-High, #1d2024);
+  }
+
+  .mat-expansion-panel-body * {
+    color: #fff;
   }
 
   .mat-expansion-panel > * {
@@ -55,7 +88,10 @@
     <mat-expansion-panel-header>
       <mat-panel-title> Phenomenons </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="d-flex" style="flex-direction: column; gap: 16px">
+    <div
+      class="d-flex"
+      style="flex-direction: column; gap: 16px; padding-top: 16px"
+    >
       <p>Select a natural phenomenon to explore its details and impact.</p>
 
       <mat-slide-toggle class="example-margin"> Volcanos</mat-slide-toggle>
@@ -72,7 +108,10 @@
     <mat-expansion-panel-header>
       <mat-panel-title> Mode </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="d-flex" style="flex-direction: column; gap: 16px">
+    <div
+      class="d-flex"
+      style="flex-direction: column; gap: 16px; padding-top: 16px"
+    >
       <p>Select the mode and time frame to view or predict earthquake data..</p>
 
       <mat-radio-group aria-label="Select an option">

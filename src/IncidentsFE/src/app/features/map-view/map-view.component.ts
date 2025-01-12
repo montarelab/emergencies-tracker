@@ -1,7 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { tileLayer, marker, circle, polygon, Map } from 'leaflet';
-
+import L, {
+  tileLayer,
+  marker,
+  circle,
+  polygon,
+  Map,
+  popup,
+  PopupOptions,
+} from 'leaflet';
+import { MatCardModule } from '@angular/material/card';
+import { DetailsPopupComponent } from '../details-popup/details-popup.component';
 import { icon } from 'leaflet';
+import { MatButtonModule } from '@angular/material/button';
+
+import {
+  ComponentFactoryResolver,
+  Injector,
+  ApplicationRef,
+  ComponentRef,
+} from '@angular/core';
+
+// const popupOptions = new PopupOptions({ maxWidth: 500 });
 
 const customIcon = icon({
   iconUrl: 'path/to/icon.png',
@@ -12,11 +31,16 @@ const customIcon = icon({
 
 @Component({
   selector: 'app-map-view',
-  imports: [],
+  imports: [MatCardModule, DetailsPopupComponent, MatButtonModule],
   templateUrl: './map-view.component.html',
   styleUrls: ['./map-view.component.scss'],
 })
 export class MapViewComponent implements OnInit {
+  constructor(
+    private resolver: ComponentFactoryResolver,
+    private injector: Injector,
+    private appRef: ApplicationRef
+  ) {}
   private map!: Map;
 
   ngOnInit() {
@@ -35,9 +59,44 @@ export class MapViewComponent implements OnInit {
     //   maxZoom: 19
     // }).addTo(this.map);
 
-    // Add a marker
-    marker([51.5, -0.09]).addTo(this.map).bindPopup('This is a marker!');
+    const data = {
+      title: 'Dynamic Card',
+      description: 'This card content is generated dynamically!',
+      buttonAction: () => alert('Dynamic button clicked!'),
+    };
 
+    // Generate dynamic HTML
+    const generatePopupContent = (data: any) => `
+      <app-details-popup>
+      </app-details-popup>
+    `;
+
+    // Add a marker
+    marker([51.5, -0.09]).addTo(this.map).bindPopup(generatePopupContent(data));
+
+    const popupFactory = this.resolver.resolveComponentFactory(
+      DetailsPopupComponent
+    );
+    const popupComponentRef: ComponentRef<DetailsPopupComponent> =
+      popupFactory.create(this.injector);
+
+    // Attach the component to Angular's appRef
+    this.appRef.attachView(popupComponentRef.hostView);
+
+    // Convert component to HTML
+    const popupHtml = popupComponentRef.location.nativeElement;
+
+    const popup = L.popup()
+      .setLatLng([51.5, -0.09])
+      .setContent(popupHtml)
+      .openOn(this.map);
+    this.map.addLayer(popup);
+
+    // Cleanup when the popup is closed
+    popup.on('remove', () => {
+      this.appRef.detachView(popupComponentRef.hostView);
+      popupComponentRef.destroy();
+    });
     // add a custom icon
     // marker([51.5, -0.09], { icon: customIcon }).addTo(this.map).bindPopup('Custom Icon!');
 
@@ -49,7 +108,7 @@ export class MapViewComponent implements OnInit {
       radius: 500,
     })
       .addTo(this.map)
-      .bindPopup('This is a circle!');
+      .bindPopup(popup);
 
     // Add a polygon
     polygon([

@@ -8,6 +8,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { DetailsPopupComponent } from '../details-popup/details-popup.component';
 
 @Component({
   selector: 'app-control-panel',
@@ -19,6 +22,9 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
+    MatCardModule,
+    MatDividerModule,
+    DetailsPopupComponent,
   ],
   providers: [provideNativeDateAdapter()],
 

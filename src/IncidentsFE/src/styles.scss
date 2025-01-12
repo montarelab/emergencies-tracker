@@ -1,5 +1,12 @@
 @use "@angular/material" as mat;
 
+:root {
+  --mat-sys-primary: #0b6bcb; /* Primary color */
+  --mat-sys-on-primary: #ffffff; /* Text color on primary */
+  --mat-sys-primary-container: #a6c1db; /* Lighter variant */
+  --mat-sys-on-primary-container: #000000; /* Text on lighter variant */
+}
+
 html,
 body {
   height: 100%;
@@ -38,4 +45,21 @@ h5,
 h6 {
   margin: 0px;
   margin-bottom: 0px !important;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--Surface-Container-High, #1d2024);
+  color: #fff;
+  border: 1px solid #757575;
+  // background-color: #333 !important;
+  // color: #fff !important;
+}
+
+.leaflet-popup-close-button {
+  margin: 10px;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: 1px solid #757575;
 }
