@@ -7,6 +7,7 @@ import L, {
   Map,
   popup,
   PopupOptions,
+  Popup,
 } from 'leaflet';
 import { MatCardModule } from '@angular/material/card';
 import { DetailsPopupComponent } from '../details-popup/details-popup.component';
@@ -44,6 +45,7 @@ const incidentIcon = `<div
     <circle cx="7.5" cy="7.5" r="7.5" fill="#FF0000" />
   </svg>
 </div>`;
+
 const customIcon = L.divIcon({
   className: '', // Add a class for styling
   html: incidentIcon,
@@ -58,19 +60,28 @@ const customIcon = L.divIcon({
   styleUrls: ['./map-view.component.scss'],
 })
 export class MapViewComponent implements OnInit {
+  popupFactory: any;
   constructor(
     private resolver: ComponentFactoryResolver,
     private injector: Injector,
     private appRef: ApplicationRef,
     private earthquakeService: EarthquakesService
-  ) {}
+  ) {
+    this.popupFactory = this.resolver.resolveComponentFactory(
+      DetailsPopupComponent
+    );
+  }
   private map!: Map;
   earthquakes: any[] | null = null;
   selectedEarthquake: any | null = null;
 
   ngOnInit() {
     this.earthquakeService.getEarthquakeList().subscribe((data) => {
-      this.earthquakes = data;
+      this.earthquakes = data.items;
+      console.log('Earthquakes data received: ', this.earthquakes.length);
+      this.earthquakes.forEach((earthquake) => {
+        this.addMarker(earthquake);
+      });
     });
     // Initialize the map
     this.map = new Map('map').setView([51.505, -0.09], 13);
@@ -79,42 +90,28 @@ export class MapViewComponent implements OnInit {
     tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
     }).addTo(this.map);
+  }
 
-    // dark theme
-    // tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    //   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
-    //   subdomains: 'abcd',
-    //   maxZoom: 19
-    // }).addTo(this.map);
+  addMarker(earthquake: any) {
+    L.marker([earthquake.longitude, earthquake.latitude], { icon: customIcon })
+      .addTo(this.map)
+      .bindPopup(this.createPopup(earthquake));
+  }
 
-    const data = {
-      title: 'Dynamic Card',
-      description: 'This card content is generated dynamically!',
-      buttonAction: () => alert('Dynamic button clicked!'),
-    };
-
-    // Generate dynamic HTML
-    const generatePopupContent = (data: any) => `
-      <app-details-popup>
-      </app-details-popup>
-    `;
-
-    // Add a marker
-    // marker([51.5, -0.09]).addTo(this.map).bindPopup(generatePopupContent(data));
-
-    // const customIcon = L.divIcon({
-    //   className: 'custom-icon', // Add a class for styling
-    //   html: `<div style="background-color: #ff6f61; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">A</div>`,
-    //   iconSize: [30, 30], // Size of the icon
-    //   iconAnchor: [15, 15], // Anchor point of the icon
-    // });
-    L.marker([51.505, -0.09], { icon: customIcon }).addTo(this.map);
-
-    const popupFactory = this.resolver.resolveComponentFactory(
-      DetailsPopupComponent
-    );
+  createPopup(earthquake: any): Popup {
     const popupComponentRef: ComponentRef<DetailsPopupComponent> =
-      popupFactory.create(this.injector);
+      this.popupFactory.create(this.injector);
+
+    popupComponentRef.instance.earthquake = {
+      name: 'Yunnan Tremor 2024',
+      description: 'Shook of the northwestern region of China',
+      deaths: 52,
+      id: 0,
+      lattitude: 25.03,
+      longitude: 101.54,
+      magnitude: 6.8,
+      region: 'Yunnan Province, near Dali City',
+    };
 
     // Attach the component to Angular's appRef
     this.appRef.attachView(popupComponentRef.hostView);
@@ -122,38 +119,17 @@ export class MapViewComponent implements OnInit {
     // Convert component to HTML
     const popupHtml = popupComponentRef.location.nativeElement;
 
-    const popup = L.popup()
-      .setLatLng([51.5, -0.09])
-      .setContent(popupHtml)
-      .openOn(this.map);
-    this.map.addLayer(popup);
+    const popup = L.popup().setLatLng([51.5, -0.09]).setContent(popupHtml);
+
+    // this.map.addLayer(popup);
 
     // Cleanup when the popup is closed
     popup.on('remove', () => {
       this.appRef.detachView(popupComponentRef.hostView);
       popupComponentRef.destroy();
     });
-    // add a custom icon
-    // marker([51.5, -0.09], { icon: customIcon }).addTo(this.map).bindPopup('Custom Icon!');
 
-    // Add a circle
-    circle([51.508, -0.11], {
-      color: 'red',
-      fillColor: '#f03',
-      fillOpacity: 0.5,
-      radius: 500,
-    })
-      .addTo(this.map)
-      .bindPopup(popup);
-
-    // Add a polygon
-    polygon([
-      [51.509, -0.08],
-      [51.503, -0.06],
-      [51.51, -0.047],
-    ])
-      .addTo(this.map)
-      .bindPopup('This is a polygon!');
+    return popup;
   }
 
   fetchDetails(id: string) {
