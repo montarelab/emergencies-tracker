@@ -2,7 +2,7 @@ module VolcanoesMicroservice.Program
 
 open System
 open VolcanoesMicroservice.Api
-open VolcanoesMicroservice.Services.EarthquakesService
+open VolcanoesMicroservice.Services.VolcanoesService
 open VolcanoesMicroservice.Dependencies
 open Microsoft.AspNetCore
 open Microsoft.AspNetCore.Builder
@@ -36,16 +36,16 @@ let configureLogging (builder : ILoggingBuilder) =
 
 let webApp fetchList fetchOne predict =
     choose [
-        route "/earthquakes/list" >=> getEarthquakeList fetchList
-        routef "/earthquakes/%s" (fun id -> getEarthquakeById (fun () -> fetchOne id))
-        route "/earthquakes/predict" >=> predictEarthquakes predict
+        route "/volcanoes/list" >=> getVolcanoesList fetchList
+        routef "/volcanoes/%s" (fun id -> getVolcanoById (fun () -> fetchOne id))
+        route "/volcanoes/predict" >=> predictVolcanoes predict
     ] 
 
 let configureApp (app: IApplicationBuilder) =
     let httpClientWrapper = configureDependencies()
-    let earthQuakesService = new EarthquakesService(httpClientWrapper)
-    let fetchList () = earthQuakesService.GetEarthquakeListAsync()
-    let fetchOne id = earthQuakesService.GetEarthquakeByIdAsync(id)
+    let volcanoesService = new VolcanoesService(httpClientWrapper)
+    let fetchList () = volcanoesService.GetVolcanoesListAsync()
+    let fetchOne id = volcanoesService.GetVolcanoByIdAsync(id)
     let predict () = task { return "Prediction data" }
     
     // todo how http handlers work 

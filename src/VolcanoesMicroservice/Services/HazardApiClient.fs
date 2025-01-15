@@ -7,27 +7,31 @@ open Giraffe.ComputationExpressions
 open Newtonsoft.Json
 // open FSharp.Control.Tasks.V2.ContextInsensitive
 
-type EarthquakeApiDto = {
+type VolcanoApiDto = {
     id: string
-    area: string
+    name: string
     country: string
     longitude: float
     latitude: float
-    eqMagnitude: float
-    date: DateTime
+    elevation: float
+    deathsTotal: int
+    status: string
+    year: int
+    month: int
+    day: int
 }
 
 type PagedApiResponse = {
-    items: EarthquakeApiDto list
+    items: VolcanoApiDto list
     page: int
     itemsPerPage: int
     totalPages: int
 }
 
-let earthquakesListEndpoint = ""
-let earthquakeByIdEndpoint id = $"/{id}/info"
+let volcanoesListEndpoint = ""
+let volcanoByIdEndpoint id = $"/{id}/info"
 
-type EarthquakesHttpClientWrapper(httpClient: HttpClient, baseUrl: string) =
+type VolcanoesHttpClientWrapper(httpClient: HttpClient, baseUrl: string) =
 
     // task {} here is a computation expression, which contains async code in a better way
     // let! is used to await the async code
@@ -40,10 +44,10 @@ type EarthquakesHttpClientWrapper(httpClient: HttpClient, baseUrl: string) =
         return JsonConvert.DeserializeObject<'T>(data)
     }
     
-    member this.GetEarthquakesListAsync(): Task<PagedApiResponse> =
-        this.GetAsync<PagedApiResponse>(earthquakesListEndpoint)
+    member this.GetVolcanoesListAsync(): Task<PagedApiResponse> =
+        this.GetAsync<PagedApiResponse>(volcanoesListEndpoint)
         
 
-    member this.GetEarthquakeAsyncById(id: string): Task<EarthquakeApiDto> = 
-        this.GetAsync<EarthquakeApiDto>(earthquakeByIdEndpoint id)
+    member this.GetVolcanoAsyncById(id: string): Task<VolcanoApiDto> = 
+        this.GetAsync<VolcanoApiDto>(volcanoByIdEndpoint id)
     

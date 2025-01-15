@@ -20,7 +20,7 @@
     <Compile Include="Preprocessing\Preprocessor.fs" />
     <Compile Include="Modelling\Predictor.fs" />
     <Compile Include="Services\HazardApiClient.fs" />
-    <Compile Include="Services\EarthquakesService.fs" />
+    <Compile Include="Services\VolcanoesService.fs" />
     <Compile Include="Api\Endpoints.fs" />
     <Compile Include="Dependencies.fs" />
     <Compile Include="Program.fs" />
