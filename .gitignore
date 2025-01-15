@@ -2,4 +2,6 @@ src/EarthquakesMicroservice/obj/
 src/EarthquakesMicroservice/bin/
 src/VolcanoesMicroservice/bin/
 src/VolcanoesMicroservice/obj/
+src/RealTimeIncident/obj/
+src/RealTimeIncident/bin/
 .idea/

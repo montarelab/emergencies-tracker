@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Earthquake } from './models';
+import { Volcano } from './models';
 
-interface EarthquakeListResponse {
-  items: Earthquake[];
+interface VolcanoListResponse {
+  items: Volcano[];
   itemsPerPage: number;
   page: number;
   totalPages: number;
@@ -13,8 +13,8 @@ interface EarthquakeListResponse {
 @Injectable({
   providedIn: 'root',
 })
-export class EarthquakesService {
-  private apiUrl = 'http://localhost:5000/earthquakes'; // Replace with your API URL
+export class VolcanoesService {
+  private apiUrl = 'http://localhost:5002/volcanoes'; // Replace with your API URL
 
   constructor(private http: HttpClient) {}
 
@@ -22,8 +22,8 @@ export class EarthquakesService {
    * Get a list of earthquakes
    * @returns Observable<any[]>
    */
-  getEarthquakeList(): Observable<EarthquakeListResponse> {
-    return this.http.get<EarthquakeListResponse>(`${this.apiUrl}/list`);
+  getVolcanoList(): Observable<VolcanoListResponse> {
+    return this.http.get<VolcanoListResponse>(`${this.apiUrl}/list`);
   }
 
   /**
@@ -31,7 +31,7 @@ export class EarthquakesService {
    * @param id - Earthquake ID
    * @returns Observable<any>
    */
-  getEarthquakeById(id: string): Observable<Earthquake> {
+  getVolcanoById(id: string): Observable<Volcano> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 }

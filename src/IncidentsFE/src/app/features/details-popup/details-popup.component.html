@@ -21,31 +21,46 @@
         margin-bottom: 12px;
       "
     >
-      {{ earthquake.name }}
+      {{ incident.name }}
     </mat-card-title>
     <mat-card-subtitle style="color: #757575; font-size: 14px">
-      {{ earthquake.description }}
+      {{ incident.description }}
     </mat-card-subtitle>
   </mat-card-header>
   <mat-divider></mat-divider>
 
   <mat-card-content style="padding: 12px 16px">
-    <b>Lattitude:</b>
-    {{ earthquake.lattitude }}
+    <!-- <b>Lattitude:</b>
+    {{ incident.lattitude }}
     ° N <br />
     <b>Longitude:</b>
-    {{ earthquake.longitude }}
+    {{ incident.longitude }}
     ° E<br />
     <b>Magnitude: </b>
-    {{ earthquake.magnitude }}
+    {{ incident.magnitude }}
     <br />
 
     <b>Region: </b>
-    {{ earthquake.region }}
+    {{ incident.region }}
     <br />
     <b>Deaths: </b>
-    {{ earthquake.deaths }}
+    {{ incident.deaths }} -->
+    <ng-container *ngIf="isEarthquake(incident)">
+      <b>Latitude:</b> {{ incident.latitude }} ° N <br />
+      <b>Longitude:</b> {{ incident.longitude }} ° E<br />
+      <b>Magnitude: </b> {{ incident.magnitude }} <br />
+      <b>Region: </b> {{ incident.region }} <br />
+      <b>Deaths: </b> {{ incident.deaths }}
+    </ng-container>
 
+    <ng-container *ngIf="!isEarthquake(incident)">
+      <b>Latitude:</b> {{ incident.latitude }} ° N <br />
+      <b>Longitude:</b> {{ incident.longitude }} ° E<br />
+      <b>Elevation: </b> {{ incident.elevation }} <br />
+      <b>Region: </b> {{ incident.region }} <br />
+      <b>Deaths: </b> {{ incident.deathsTotal }} <br />
+      <b>Date: </b> {{ incident.date | date : "longDate" }}
+    </ng-container>
     <!-- </p> -->
   </mat-card-content>
   <mat-divider></mat-divider>

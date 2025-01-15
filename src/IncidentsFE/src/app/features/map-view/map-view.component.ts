@@ -14,12 +14,14 @@ import { DetailsPopupComponent } from '../details-popup/details-popup.component'
 import { icon } from 'leaflet';
 import { MatButtonModule } from '@angular/material/button';
 import { EarthquakesService } from '../../services/earthquakes-service';
+import { VolcanoesService } from '../../services/volcanoes-service';
 import {
   ComponentFactoryResolver,
   Injector,
   ApplicationRef,
   ComponentRef,
 } from '@angular/core';
+import { Earthquake, Incident, Volcano } from '../../services/models';
 
 // const popupOptions = new PopupOptions({ maxWidth: 500 });
 
@@ -65,24 +67,19 @@ export class MapViewComponent implements OnInit {
     private resolver: ComponentFactoryResolver,
     private injector: Injector,
     private appRef: ApplicationRef,
-    private earthquakeService: EarthquakesService
+    private earthquakeService: EarthquakesService,
+    private volcanoService: VolcanoesService
   ) {
     this.popupFactory = this.resolver.resolveComponentFactory(
       DetailsPopupComponent
     );
   }
   private map!: Map;
-  earthquakes: any[] | null = null;
+  earthquakes: Earthquake[] | null = null;
+  volcanoes: Volcano[] | null = null;
   selectedEarthquake: any | null = null;
 
   ngOnInit() {
-    this.earthquakeService.getEarthquakeList().subscribe((data) => {
-      this.earthquakes = data.items;
-      console.log('Earthquakes data received: ', this.earthquakes.length);
-      this.earthquakes.forEach((earthquake) => {
-        this.addMarker(earthquake);
-      });
-    });
     // Initialize the map
     this.map = new Map('map').setView([51.505, -0.09], 13);
 
@@ -90,28 +87,35 @@ export class MapViewComponent implements OnInit {
     tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
     }).addTo(this.map);
+
+    // this.earthquakeService.getEarthquakeList().subscribe((data) => {
+    //   this.earthquakes = data.items;
+    //   console.log('Earthquakes data received: ', this.earthquakes.length);
+    //   this.earthquakes.forEach((earthquake) => {
+    //     this.addMarker(earthquake);
+    //   });
+    // });
+
+    this.volcanoService.getVolcanoList().subscribe((data) => {
+      this.volcanoes = data.items;
+      console.log('Volcano data received: ', this.volcanoes.length);
+      this.volcanoes.forEach((Volcano) => {
+        this.addMarker(Volcano);
+      });
+    });
   }
 
-  addMarker(earthquake: any) {
-    L.marker([earthquake.longitude, earthquake.latitude], { icon: customIcon })
+  addMarker(incident: Incident) {
+    L.marker([incident.longitude, incident.latitude], { icon: customIcon })
       .addTo(this.map)
-      .bindPopup(this.createPopup(earthquake));
+      .bindPopup(this.createPopup(incident));
   }
 
-  createPopup(earthquake: any): Popup {
+  createPopup(incident: Incident): Popup {
     const popupComponentRef: ComponentRef<DetailsPopupComponent> =
       this.popupFactory.create(this.injector);
 
-    popupComponentRef.instance.earthquake = {
-      name: 'Yunnan Tremor 2024',
-      description: 'Shook of the northwestern region of China',
-      deaths: 52,
-      id: 0,
-      lattitude: 25.03,
-      longitude: 101.54,
-      magnitude: 6.8,
-      region: 'Yunnan Province, near Dali City',
-    };
+    popupComponentRef.instance.incident = incident;
 
     // Attach the component to Angular's appRef
     this.appRef.attachView(popupComponentRef.hostView);
@@ -120,8 +124,6 @@ export class MapViewComponent implements OnInit {
     const popupHtml = popupComponentRef.location.nativeElement;
 
     const popup = L.popup().setLatLng([51.5, -0.09]).setContent(popupHtml);
-
-    // this.map.addLayer(popup);
 
     // Cleanup when the popup is closed
     popup.on('remove', () => {
@@ -132,9 +134,9 @@ export class MapViewComponent implements OnInit {
     return popup;
   }
 
-  fetchDetails(id: string) {
-    this.earthquakeService.getEarthquakeById(id).subscribe((data) => {
-      this.selectedEarthquake = data;
-    });
-  }
+  // fetchDetails(id: string) {
+  //   this.earthquakeService.getEarthquakeById(id).subscribe((data) => {
+  //     this.selectedEarthquake = data;
+  //   });
+  // }
 }
