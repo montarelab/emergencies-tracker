@@ -1,3 +1,5 @@
 src/EarthquakesMicroservice/obj/
 src/EarthquakesMicroservice/bin/
+src/VolcanoesMicroservice/bin/
+src/VolcanoesMicroservice/obj/
 .idea/
