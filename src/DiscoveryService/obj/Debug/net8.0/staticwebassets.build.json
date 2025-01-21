@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "d9FZrA3PXKHWRncGtmRJzt6kJcG2xxc9ERHkUNWXWtE=",
+  "Source": "VolcanoesMicroservice",
+  "BasePath": "_content/VolcanoesMicroservice",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

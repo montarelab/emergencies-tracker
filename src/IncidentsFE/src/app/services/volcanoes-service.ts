@@ -14,7 +14,7 @@ interface VolcanoListResponse {
   providedIn: 'root',
 })
 export class VolcanoesService {
-  private apiUrl = 'http://localhost:5002/volcanoes'; // Replace with your API URL
+  private apiUrl = 'http://localhost:5000/gateway/volcanoes'; // Replace with your API URL
 
   constructor(private http: HttpClient) {}
 

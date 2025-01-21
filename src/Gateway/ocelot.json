@@ -1,0 +1,26 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5000"
+  },
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/gateway/earthquakes/list",
+      "UpstreamHttpMethod": [ "GET"],
+      "DownstreamPathTemplate": "/earthquakes/list",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 5001 }
+      ],
+      "DownstreamHost": "http://localhost:5001"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/volcanoes/{everything}",
+      "UpstreamHttpMethod": [ "GET"],
+      "DownstreamPathTemplate": "/volcanoes/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 5002 }
+      ]
+    }
+  ]
+}

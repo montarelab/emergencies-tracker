@@ -1,67 +1,82 @@
-module VolcanoesMicroservice.Program
-
 open System
-open VolcanoesMicroservice.Api
-open VolcanoesMicroservice.Services.VolcanoesService
-open VolcanoesMicroservice.Dependencies
-open Microsoft.AspNetCore
+open System.Net.WebSockets
 open Microsoft.AspNetCore.Builder
-open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.AspNetCore.Hosting
+open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.DependencyInjection
+open Microsoft.Extensions.Hosting
 open Giraffe
-open VolcanoesMicroservice.Api.Endpoints
-open Microsoft.Extensions.Logging
+open System.Threading
+open System.Threading.Tasks
+open System.Text
 
-let errorHandler (ex : Exception) (logger : ILogger) =
-    logger.LogError(ex, "An unhandled exception has occurred while executing the request.")
-    clearResponse >=> setStatusCode 500 >=> text ex.Message
+// A simple function to simulate sending a message
+let sendMessage () =
+    printfn "Sending message at %s" (DateTime.Now.ToString())
 
-let configureCors (builder : CorsPolicyBuilder) =
-    builder.WithOrigins(
-            "http://localhost:4200",
-            "https://localhost:4200")
-        .AllowAnyMethod()
-       .AllowAnyHeader()
-       |> ignore
+// A background service that sends messages every minute
+type BackgroundMessageService(webSocket: WebSocket) =
+    inherit BackgroundService()
+
+    override _.ExecuteAsync(cancellationToken: CancellationToken) =
+        async {
+            while not cancellationToken.IsCancellationRequested do
+                do! Async.Sleep(60 * 1000)  // Sleep for 1 minute
+                sendMessage()  // Simulate sending a message
+                let message = Encoding.UTF8.GetBytes("Message from server at " + DateTime.Now.ToString())
+                // Send the message to the connected WebSocket client
+                try
+                    if webSocket.State = WebSocketState.Open then
+                        do! webSocket.SendAsync(
+                                new ArraySegment<byte>(message),
+                                WebSocketMessageType.Text,
+                                true,
+                                cancellationToken
+                            ) |> Async.AwaitTask
+                with ex ->
+                    printfn "Error sending WebSocket message: %s" ex.Message
+        } |> Async.StartAsTask :> Task
 
 
-let configureServices (services: IServiceCollection) =
-    services.AddCors() |> ignore
-    services.AddGiraffe() |> ignore
+// Handler to accept WebSocket connections
+let webSocketHandler (context: HttpContext) =
+    async {
+        // Check if the connection request supports WebSockets
+        if context.WebSockets.IsWebSocketRequest then
+            let! webSocket = context.WebSockets.AcceptWebSocketAsync() |> Async.AwaitTask
+            // Start the background service with the established WebSocket connection
+            let backgroundService = new BackgroundMessageService(webSocket)
+            do! backgroundService.StartAsync(CancellationToken.None) |> Async.AwaitTask
+        else
+            context.Response.StatusCode <- 400  // Bad request for non-WebSocket connections
+            return ()
+    } |> Async.StartAsTask
 
-let configureLogging (builder : ILoggingBuilder) =
-    builder.AddConsole()
-           .AddDebug() |> ignore
 
-let webApp fetchList fetchOne predict =
+// The HTTP handler for Giraffe
+let webApp =
     choose [
-        route "/volcanoes/list" >=> getVolcanoesList fetchList
-        routef "/volcanoes/%s" (fun id -> getVolcanoById (fun () -> fetchOne id))
-        route "/volcanoes/predict" >=> predictVolcanoes predict
-    ] 
+        GET >=>
+            choose [
+                route "/" >=> text "Giraffe API is running"
+                route "/ws" >=> fun next ctx -> webSocketHandler ctx 
+            ]
+    ]
 
-let configureApp (app: IApplicationBuilder) =
-    let httpClientWrapper = configureDependencies()
-    let volcanoesService = new VolcanoesService(httpClientWrapper)
-    let fetchList () = volcanoesService.GetVolcanoesListAsync()
-    let fetchOne id = volcanoesService.GetVolcanoByIdAsync(id)
-    let predict () = task { return "Prediction data" }
-    
-    // todo how http handlers work 
-    app.UseGiraffeErrorHandler(errorHandler)
-       .UseHttpsRedirection()
-       .UseCors(configureCors)
-       .UseGiraffe(webApp fetchList fetchOne predict)
-       
-
+// Create and configure the host for the Giraffe application
 [<EntryPoint>]
-let main args =
-    let builder = WebHost.CreateDefaultBuilder(args)
-                      .ConfigureServices(configureServices)
-                      .ConfigureLogging(configureLogging)
-                      .Configure(configureApp)
-                      .Build()
-                      
-    builder.Run()
+let main _ =
+    let host = Host.CreateDefaultBuilder()
+                    .ConfigureWebHostDefaults(fun webHostBuilder ->
+                        webHostBuilder.ConfigureServices(fun services ->
+                            services.AddSingleton<BackgroundMessageService>() |> ignore
+                            services.AddGiraffe() |> ignore) |> ignore
+                        webHostBuilder.Configure(fun app ->
+                            app.UseWebSockets() |> ignore  // Enable WebSocket support
+                            app.UseGiraffe(webApp)
+                        ) |> ignore
+                    )
+                    .Build()
+
+    host.Run()
     0

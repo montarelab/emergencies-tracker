@@ -14,7 +14,7 @@ interface EarthquakeListResponse {
   providedIn: 'root',
 })
 export class EarthquakesService {
-  private apiUrl = 'http://localhost:5000/earthquakes'; // Replace with your API URL
+  private apiUrl = 'http://localhost:5000/gateway/earthquakes'; // Replace with your API URL
 
   constructor(private http: HttpClient) {}
 
