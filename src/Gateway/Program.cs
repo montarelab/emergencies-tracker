@@ -1,3 +1,6 @@
+using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.RateLimiting;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("gateway.json", optional: false, reloadOnChange: true);
@@ -13,9 +16,21 @@ builder.Configuration.AddJsonFile("gateway.json", optional: false, reloadOnChang
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("FixedRatePolicy", opt =>
+    {
+        opt.PermitLimit = 4; // Allow 4 requests
+        opt.Window = TimeSpan.FromSeconds(12); // In a 10-second window
+        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        opt.QueueLimit = 2; // Allow up to 2 queued requests
+    });
+});
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello from Gateway!");
-
 app.MapReverseProxy();
+app.UseRateLimiter();
+
 app.Run();
