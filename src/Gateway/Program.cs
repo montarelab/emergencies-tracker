@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.UseUrls("http://localhost:5000");
+
 builder.Configuration.AddJsonFile("gateway.json", optional: false, reloadOnChange: true);
 
 /*
