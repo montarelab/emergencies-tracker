@@ -4,5 +4,8 @@ src/VolcanoesMicroservice/bin/
 src/VolcanoesMicroservice/obj/
 src/RealTimeIncident/obj/
 src/RealTimeIncident/bin/
-src/Gateway
+src/Gateway/bin
+src/Gateway/obj
+src/Gateway/.idea
+src/Gateway/Properties
 .idea/
