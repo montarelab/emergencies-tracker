@@ -1,6 +1,6 @@
 using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.RateLimiting;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("gateway.json", optional: false, reloadOnChange: true);
@@ -31,13 +31,38 @@ builder.Services.AddRateLimiter(options =>
 
 var app = builder.Build();
 
-app.MapGet("/hello" , () =>
+app.MapGet("/hello" , () => "Hello World!");
+
+app.MapReverseProxy(proxyPipeline =>
 {
-    Console.WriteLine("Hello World!");
-    return "Hello World!";
+    proxyPipeline.Use(async (context, next) =>
+    {
+        await next();
+        var errorFeature = context.GetForwarderErrorFeature();
+        if (errorFeature is not null)
+        {
+            if(errorFeature.Exception is UriFormatException ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status502BadGateway;
+                string message = $"The hostname could not be parsed: {context.Request.GetDisplayUrl()}.";
+                await context.Response.WriteAsync(message);            
+            }
+        }
+    });
+});
+app.UseRateLimiter();
+
+app.MapFallback(async context =>
+{
+    context.Response.ContentType = "application/json";
+    context.Response.StatusCode = 404;
+    var errorResponse = new
+    {
+        StatusCode = 404,
+        Message = "The requested URL was not found on the server."
+    };
+    await context.Response.WriteAsJsonAsync(errorResponse);
 });
 
-app.MapReverseProxy();
-app.UseRateLimiter();
 
 app.Run();

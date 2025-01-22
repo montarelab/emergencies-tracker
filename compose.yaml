@@ -1,5 +1,6 @@
 ﻿services:
   gateway:
+    container_name: gateway
     # image: gateway:latest
     build:
       context: .
@@ -8,8 +9,16 @@
       - "5000:8000"
     environment:
       - ASPNETCORE_URLS=http://+:8000
+    develop:
+      watch:
+        - action: sync+restart
+          path: src/Gateway
+          target: /app
+    networks:
+      - incidents
 
   earthquakes:
+    container_name: earthquakes
     # image: earthquakes:latest
     build:
       context: .
@@ -18,3 +27,14 @@
       - "5001:8001"
     environment:
       - ASPNETCORE_URLS=http://+:8001
+    develop:
+      watch:
+        - action: sync+restart
+          path: src/EarthquakesMicroservice
+          target: /app
+    networks:
+      - incidents
+
+networks:
+  incidents:
+    driver: bridge
