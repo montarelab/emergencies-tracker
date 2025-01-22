@@ -1,0 +1,8 @@
+﻿services:
+  gateway:
+    image: gateway:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"

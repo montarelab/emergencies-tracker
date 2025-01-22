@@ -8,6 +8,23 @@ This repository provides a complete solution for tracking and visualizing emerge
 
 ---
 
+## Run
+
+Run single container
+
+```
+docker build -t image_name .
+docker run -it -p your_port:8080 --rm --name container_name image_name
+```
+
+Run composition
+
+```
+docker compose up
+```
+
+---
+
 ## Features
 
 ### Backend (Microservices in F# with Giraffe)
