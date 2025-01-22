@@ -1,26 +1,22 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 as build
-WORKDIR /App
-ENV ASPNETCORE_URLS=http://localhost:5000
-EXPOSE 5000
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER $APP_UID
+WORKDIR /app
+EXPOSE 8080
 
-# Copy everything
-COPY . ./
-# Restore as distinct layers
-RUN dotnet restore
-# Build and publish a release
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["Gateway.csproj", "./"]
+RUN dotnet restore "Gateway.csproj"
+COPY . .
+WORKDIR "/src/"
+RUN dotnet build "Gateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# dotnet publish compiles app and its dependencies into self-contained directory
-# and ensures optimal output for deployment purpose
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "Gateway.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# -o out specifies the output directory
-RUN dotnet publish -o out
-
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
-WORKDIR /App
-ENV ASPNETCORE_URLS=http://localhost:5000
-
-EXPOSE 5000
-
-COPY --from=build /App/out .
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Gateway.dll"]
