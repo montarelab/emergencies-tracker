@@ -1,3 +1,4 @@
+
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.RateLimiting;
@@ -5,7 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("gateway.json", optional: false, reloadOnChange: true);
 
+builder.AddServiceDefaults();
+
 /*
+
  * Yarp configuration contains the following sections:
  * - RouteConfig. Describes a route that matches incoming requests based on the Match criteria
  * to the cluster identified by its ClusterId.

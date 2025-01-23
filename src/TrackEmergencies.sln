@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "Gateway\Gateway.csproj", "{74E32C6A-4904-47AE-89B9-955CDDAF837F}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "EarthquakesMicroservice", "EarthquakesMicroservice\EarthquakesMicroservice.fsproj", "{FF05BABE-29FA-42FA-94D0-9DD2B1F2DCE5}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "VolcanoesMicroservice", "VolcanoesMicroservice\VolcanoesMicroservice.fsproj", "{F1BB1804-6759-4D9E-A962-726ED693C488}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AspireDiscovery", "AspireDiscovery", "{65627E0D-6227-4373-9CCE-08AEFD35F3F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireDiscovery.ServiceDefaults", "AspireDiscovery\AspireDiscovery.ServiceDefaults\AspireDiscovery.ServiceDefaults.csproj", "{A5754ADF-CB42-46C5-A4F7-C295D75E78B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireDiscovery.AppHost", "AspireDiscovery\AspireDiscovery.AppHost\AspireDiscovery.AppHost.csproj", "{B724E59D-7DF4-45B5-86B1-8BA6634986E5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{74E32C6A-4904-47AE-89B9-955CDDAF837F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74E32C6A-4904-47AE-89B9-955CDDAF837F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74E32C6A-4904-47AE-89B9-955CDDAF837F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74E32C6A-4904-47AE-89B9-955CDDAF837F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF05BABE-29FA-42FA-94D0-9DD2B1F2DCE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF05BABE-29FA-42FA-94D0-9DD2B1F2DCE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF05BABE-29FA-42FA-94D0-9DD2B1F2DCE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF05BABE-29FA-42FA-94D0-9DD2B1F2DCE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1BB1804-6759-4D9E-A962-726ED693C488}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1BB1804-6759-4D9E-A962-726ED693C488}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1BB1804-6759-4D9E-A962-726ED693C488}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1BB1804-6759-4D9E-A962-726ED693C488}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5754ADF-CB42-46C5-A4F7-C295D75E78B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5754ADF-CB42-46C5-A4F7-C295D75E78B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5754ADF-CB42-46C5-A4F7-C295D75E78B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5754ADF-CB42-46C5-A4F7-C295D75E78B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B724E59D-7DF4-45B5-86B1-8BA6634986E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B724E59D-7DF4-45B5-86B1-8BA6634986E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B724E59D-7DF4-45B5-86B1-8BA6634986E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B724E59D-7DF4-45B5-86B1-8BA6634986E5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A5754ADF-CB42-46C5-A4F7-C295D75E78B1} = {65627E0D-6227-4373-9CCE-08AEFD35F3F8}
+		{B724E59D-7DF4-45B5-86B1-8BA6634986E5} = {65627E0D-6227-4373-9CCE-08AEFD35F3F8}
+	EndGlobalSection
+EndGlobal

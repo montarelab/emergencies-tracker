@@ -76,3 +76,32 @@ List of common rules and mistakes:
 
 1. Default Dockerfiles on the internet are good enough and working.
 2. Angular and other web containers work with localhost, external port, while .NET microservices work on internal Docker network
+
+## .NET Aspire - tool for discovery services
+
+default tempalte `aspire-starter` creates the solution of 4 projects:
+
+- **`ApiService`** - a simple weather API
+- **`AppHost`** - key unit
+- **`Web`** - default Blazor counter and Weather API fetcher
+- **`ServiceDefaults`** - contains default methods to simplify work like:
+  - `AddServiceDefaults` - adds everything below
+  - `ConfigureOpenTelemetry`
+  - `AddOpenTelemetryExporters`
+  - `AddDefaultHealthChecks`
+  - `MapDefaultEndpoints` - maps endpoints for healthchecker
+
+### AppHost - key unit
+
+Unions all of the service:
+
+```cs
+var apiService = builder.AddProject<Projects.AspireDiscovery_ApiService>("apiservice");
+
+builder.AddProject<Projects.AspireDiscovery_Web>("webfrontend")
+    .WithExternalHttpEndpoints()
+    .WithReference(cache)
+    .WaitFor(cache)
+    .WithReference(apiService)
+    .WaitFor(apiService);
+```

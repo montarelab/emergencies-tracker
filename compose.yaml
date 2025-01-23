@@ -63,13 +63,6 @@
       - "4200:4200"
     # environment:
     # - ASPNETCORE_URLS=http://+:8002
-    develop:
-      watch:
-        - action: rebuild
-          path: src/IncidentsFE
-          target: /app
-          ignore:
-            - node_modules
     networks:
       - incidents
 
