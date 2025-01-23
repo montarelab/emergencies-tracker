@@ -53,6 +53,26 @@
     networks:
       - incidents
 
+  frontend:
+    container_name: frontend
+    # image: earthquakes:latest
+    build:
+      context: .
+      dockerfile: src/IncidentsFE/Dockerfile
+    ports:
+      - "4200:4200"
+    # environment:
+    # - ASPNETCORE_URLS=http://+:8002
+    develop:
+      watch:
+        - action: rebuild
+          path: src/IncidentsFE
+          target: /app
+          ignore:
+            - node_modules
+    networks:
+      - incidents
+
 networks:
   incidents:
     driver: bridge

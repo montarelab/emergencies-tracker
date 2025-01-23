@@ -1,5 +1,5 @@
 using System.Threading.RateLimiting;
-using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.RateLimiting;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +15,11 @@ builder.Configuration.AddJsonFile("gateway.json", optional: false, reloadOnChang
     
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder.Configuration.GetSection("CorsSettings").Get<CorsPolicy>());
+});
 
 
 builder.Services.AddRateLimiter(options =>
