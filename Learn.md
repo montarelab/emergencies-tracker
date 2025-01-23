@@ -54,6 +54,8 @@ docker create network -d bridge network_name
 
 After all of the container need to be connected to the network using parameter `--network network_name`
 
+Connected are accessible within the same network as `http://{container_name}:{internal_docker_port}`
+
 ---
 
 ### Docker Compose
@@ -63,4 +65,9 @@ After all of the container need to be connected to the network using parameter `
 To build images and run, write:
 `docker compose up --bbuild`
 
----
+## Containerize .NET
+
+List of common rules and mistakes:
+
+1. Name of `.dll` file is not always the same as `.csproj` or `.fsproj`. Especially, when you have renamed it, natural name will be written in project file at `<AssemblyName>` tag
+2. If you wish to setup `docker compose watch` the onlt `action` works for you is `rebuild`
