@@ -71,3 +71,8 @@ List of common rules and mistakes:
 
 1. Name of `.dll` file is not always the same as `.csproj` or `.fsproj`. Especially, when you have renamed it, natural name will be written in project file at `<AssemblyName>` tag
 2. If you wish to setup `docker compose watch` the onlt `action` works for you is `rebuild`
+
+## Containerize Angular
+
+1. Default Dockerfiles on the internet are good enough and working.
+2. Angular and other web containers work with localhost, external port, while .NET microservices work on internal Docker network
