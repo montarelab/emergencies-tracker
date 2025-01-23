@@ -33,23 +33,7 @@ var app = builder.Build();
 
 app.MapGet("/hello" , () => "Hello World!");
 
-app.MapReverseProxy(proxyPipeline =>
-{
-    proxyPipeline.Use(async (context, next) =>
-    {
-        await next();
-        var errorFeature = context.GetForwarderErrorFeature();
-        if (errorFeature is not null)
-        {
-            if(errorFeature.Exception is UriFormatException ex)
-            {
-                context.Response.StatusCode = StatusCodes.Status502BadGateway;
-                string message = $"The hostname could not be parsed: {context.Request.GetDisplayUrl()}.";
-                await context.Response.WriteAsync(message);            
-            }
-        }
-    });
-});
+app.MapReverseProxy();
 app.UseRateLimiter();
 
 app.MapFallback(async context =>

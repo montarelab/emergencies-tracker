@@ -11,7 +11,7 @@
       - ASPNETCORE_URLS=http://+:8000
     develop:
       watch:
-        - action: sync+restart
+        - action: rebuild
           path: src/Gateway
           target: /app
     networks:
@@ -29,7 +29,7 @@
       - ASPNETCORE_URLS=http://+:8001
     develop:
       watch:
-        - action: sync+restart
+        - action: rebuild
           path: src/EarthquakesMicroservice
           target: /app
     networks:
