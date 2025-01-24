@@ -105,3 +105,13 @@ builder.AddProject<Projects.AspireDiscovery_Web>("webfrontend")
     .WithReference(apiService)
     .WaitFor(apiService);
 ```
+
+### Aspire Roadmap
+
+- **Orchestrate Node.js apps**: https://learn.microsoft.com/en-us/dotnet/aspire/get-started/build-aspire-apps-with-nodejs
+
+- Add **Dockerfile** to your system to make to possible to build them while starting **AppHost**: https://learn.microsoft.com/en-us/dotnet/aspire/app-host/withdockerfile
+
+- Persist .NET Aspire data with volumes: https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/persist-data-volumes
+
+- .NET Aspire Deployment: https://learn.microsoft.com/en-us/dotnet/aspire/deployment/overview
