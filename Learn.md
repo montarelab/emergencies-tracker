@@ -115,3 +115,115 @@ builder.AddProject<Projects.AspireDiscovery_Web>("webfrontend")
 - Persist .NET Aspire data with volumes: https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/persist-data-volumes
 
 - .NET Aspire Deployment: https://learn.microsoft.com/en-us/dotnet/aspire/deployment/overview
+
+## Kubernetes
+
+What I will win if I start using it into microservices project?
+
+1. **Scalability and Resource Efficiency**
+
+- Limit resources for service
+- Simple horizontal scaling
+
+2. **High Availability & Self-Healing**
+
+- Automatic failover if a cotnainer crashes
+
+3. **Advanced Deployment Strategies**
+
+- Rolling updates. Deploy new versions with zero downtime by incrementally replacing old pods
+- Rollbacks
+
+4. **Service Mangement & Discovery**
+
+- Build-in Service Discovery
+
+- Load Balancing using Service (ClusterIP, NodePort and LoadBalancer)
+
+5. **Configuration & Secret Management**
+
+- ConfigMaps and Secrets
+
+6.  **Storage Orchestration**
+
+- Using Persistent Volumes and Volume Snapshot
+
+7. **CI/CD Integration**
+
+- GitOps Workflow using tools like Argo CD to automate deployments from Git repositories
+- Pipeline Automation seamless intergration with Junkins, GitLab CI or GitHub actions
+
+8. **Troubleshooting**
+
+- Seemless integration with Grafana for logs, metrics and tracing centrailizing
+
+### How to use Minikube?
+
+Start cluster
+
+```bash
+minikube start
+```
+
+To open local service discovery
+
+```bash
+minikube dashboard
+```
+
+Transform docker compose files into kubernetes files.
+Run in folder where you have compose file
+
+```bash
+docker run --rm -it -v $PWD:/opt kompose sh -c "cd /opt && kompose convert"
+```
+
+apply changes of kubernetes files
+
+```bash
+minikube kubectl -- apply -f .
+```
+
+### Types of Service in Kubernetes
+
+- **ClusterIP** - default one, is used for internal cluster communication
+- **NodePort** - used for local testing from external IP
+- **LoadBalancer** - for cloud environments
+
+### Access to Kubernetes pod from browser
+
+1. Using NodePort
+
+Create NodePort
+
+```bash
+kubectl expose deployment {deployment_name} --type=NodePort --port={port}
+```
+
+Get the url for the URL of your service
+
+```bash
+minikube service {service_name}
+```
+
+1. Using LoadBalancer
+
+Create LoadBalancer
+
+```bash
+kubectl expose deployment {deployment_name} --type=LoadBalancer --port={port}
+```
+
+Simulate LoadBalancer and open access to them from browser
+
+```bash
+minikube tunnel
+```
+
+3. Use default Service - ClusterIP or Pod
+
+Use Port Forwarding
+
+```bash
+kubectl port-forward deployment/{deployment_name} 8080:8080
+```

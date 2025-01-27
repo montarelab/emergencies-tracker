@@ -1,7 +1,7 @@
 ﻿services:
   gateway:
     container_name: gateway
-    # image: gateway:latest
+    image: dmitryx/incidents-gateway:latest
     build:
       context: .
       dockerfile: src/Gateway/Dockerfile
@@ -19,7 +19,7 @@
 
   earthquakes:
     container_name: earthquakes
-    # image: earthquakes:latest
+    image: dmitryx/incidents-earthquakes:latest
     build:
       context: .
       dockerfile: src/EarthquakesMicroservice/Dockerfile
@@ -37,7 +37,7 @@
 
   volcanoes:
     container_name: volcanoes
-    # image: earthquakes:latest
+    image: dmitryx/incidents-volcanoes:latest
     build:
       context: .
       dockerfile: src/VolcanoesMicroservice/Dockerfile
@@ -55,7 +55,7 @@
 
   frontend:
     container_name: frontend
-    # image: earthquakes:latest
+    image: dmitryx/incidents-fe:latest
     build:
       context: .
       dockerfile: src/IncidentsFE/Dockerfile
