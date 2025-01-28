@@ -36,7 +36,7 @@ jobs:
 
       - name: Build Angular project
         run: npm run build --prod
-        working-directory: ./IncidentsFE
+        working-directory: ./src/IncidentsFE
 
       - name: Build .NET Docker image
         run: |
