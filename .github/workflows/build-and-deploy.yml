@@ -23,7 +23,7 @@ jobs:
         run: dotnet restore ./src/TrackEmergencies.sln
 
       - name: Build .NET application
-        run: dotnet build dotnet restore ./src/TrackEmergencies.sln --configuration Release
+        run: dotnet restore ./src/TrackEmergencies.sln --configuration Release
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
