@@ -42,7 +42,7 @@ jobs:
         run: |
           docker build -t dmitryx/incidents-earthquakes:latest -f ./src/EarthquakesMicroservice/Dockerfile .
           docker build -t dmitryx/incidents-volcanoes:latest -f ./src/VolcanoesMicroservice/Dockerfile .
-          docker build -t dmitryx/incidents-gateway:latest -f ./src/GatewayMicroservice/Dockerfile .
+          docker build -t dmitryx/incidents-gateway:latest -f ./src/Gateway/Dockerfile .
 
       - name: Build Angular Docker image
         run: |
