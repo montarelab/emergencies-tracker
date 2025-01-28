@@ -1,0 +1,70 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout step is necessary to clone the code from the repository to runner
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0"
+
+      - name: Restore .NET dependencies
+        run: dotnet restore ./src/TrackEmergencies.sln
+
+      - name: Build .NET application
+        run: dotnet build dotnet restore ./src/TrackEmergencies.sln --configuration Release
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22.7.0"
+
+      - name: Install Angular dependencies
+        run: npm install
+        working-directory: ./src/IncidentsFE
+
+      - name: Build Angular project
+        run: npm run build --prod
+        working-directory: ./IncidentsFE
+
+      - name: Build .NET Docker image
+        run: |
+          docker build -t dmitryx/incidents-earthquakes:latest -f ./src/EarthquakesMicroservice/Dockerfile .
+          docker build -t dmitryx/incidents-volcanoes:latest -f ./src/VolcanoesMicroservice/Dockerfile .
+          docker build -t dmitryx/incidents-gateway:latest -f ./src/GatewayMicroservice/Dockerfile .
+
+      - name: Build Angular Docker image
+        run: |
+          docker build -t dmitryx/incidents-fe:latest -f ./src/IncidentsFE/Dockerfile .
+
+  push:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push .NET Docker image
+        run: |
+          docker push dmitryx/incidents-earthquakes:latest
+          docker push dmitryx/incidents-volcanoes:latest
+          docker push dmitryx/incidents-gateway:latest
+
+      - name: Push Angular Docker image
+        run: |
+          docker push dmitryx/incidents-fe:latest

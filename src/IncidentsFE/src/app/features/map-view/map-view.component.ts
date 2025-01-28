@@ -81,7 +81,7 @@ export class MapViewComponent implements OnInit {
 
   ngOnInit() {
     // Initialize the map
-    this.map = new Map('map').setView([51.505, -0.09], 13);
+    this.map = new Map('map').setView([35, 1], 3);
 
     // Add tile layer (light theme for now, switchable to dark theme later)
     tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
