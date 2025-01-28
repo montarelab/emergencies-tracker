@@ -42,6 +42,9 @@ jobs:
     needs: build
 
     steps:
+      - name: Checkout code # REQUIRED to access the repo in this job
+        uses: actions/checkout@v2
+
       - name: Build .NET Docker image
         run: |
           docker build -t dmitryx/incidents-earthquakes:latest -f ./src/EarthquakesMicroservice/Dockerfile .
@@ -57,6 +60,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: List Docker images
         run: docker images
       - name: Push .NET Docker image
