@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import L, {
   tileLayer,
   marker,
@@ -61,47 +67,45 @@ const customIcon = L.divIcon({
   templateUrl: './map-view.component.html',
   styleUrls: ['./map-view.component.scss'],
 })
-export class MapViewComponent implements OnInit {
+export class MapViewComponent implements OnInit, OnChanges {
+  @Input()
+  earthquakes!: Earthquake[];
+  @Input()
+  volcanoes!: Volcano[];
+
+  private map!: Map;
   popupFactory: any;
+
   constructor(
     private resolver: ComponentFactoryResolver,
     private injector: Injector,
-    private appRef: ApplicationRef,
-    private earthquakeService: EarthquakesService,
-    private volcanoService: VolcanoesService
+    private appRef: ApplicationRef
   ) {
     this.popupFactory = this.resolver.resolveComponentFactory(
       DetailsPopupComponent
     );
   }
-  private map!: Map;
-  earthquakes: Earthquake[] | null = null;
-  volcanoes: Volcano[] | null = null;
-  selectedEarthquake: any | null = null;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['earthquakes']) {
+      console.log('Earthquakes changed');
+      this.addIncidenents(this.earthquakes);
+    }
+    if (changes['volcanoes']) {
+      console.log('Volcanoes changed');
+      this.addIncidenents(this.volcanoes);
+    }
+  }
 
   ngOnInit() {
-    // Initialize the map
     this.map = new Map('map').setView([35, 1], 3);
-
-    // Add tile layer (light theme for now, switchable to dark theme later)
     tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
     }).addTo(this.map);
+  }
 
-    // this.earthquakeService.getEarthquakeList().subscribe((data) => {
-    //   this.earthquakes = data.items;
-    //   console.log('Earthquakes data received: ', this.earthquakes.length);
-    //   this.earthquakes.forEach((earthquake) => {
-    //     this.addMarker(earthquake);
-    //   });
-    // });
-
-    this.volcanoService.getVolcanoList().subscribe((data) => {
-      this.volcanoes = data.items;
-      console.log('Volcano data received: ', this.volcanoes.length);
-      this.volcanoes.forEach((Volcano) => {
-        this.addMarker(Volcano);
-      });
+  addIncidenents(incidents: Incident[]) {
+    incidents.forEach((incident) => {
+      this.addMarker(incident);
     });
   }
 
@@ -116,27 +120,16 @@ export class MapViewComponent implements OnInit {
       this.popupFactory.create(this.injector);
 
     popupComponentRef.instance.incident = incident;
+    this.appRef.attachView(popupComponentRef.hostView); // Attach the component to Angular's appRef
 
-    // Attach the component to Angular's appRef
-    this.appRef.attachView(popupComponentRef.hostView);
-
-    // Convert component to HTML
-    const popupHtml = popupComponentRef.location.nativeElement;
-
+    const popupHtml = popupComponentRef.location.nativeElement; // Convert component to HTML
     const popup = L.popup().setLatLng([51.5, -0.09]).setContent(popupHtml);
 
-    // Cleanup when the popup is closed
     popup.on('remove', () => {
       this.appRef.detachView(popupComponentRef.hostView);
       popupComponentRef.destroy();
-    });
+    }); // Cleanup when the popup is closed
 
     return popup;
   }
-
-  // fetchDetails(id: string) {
-  //   this.earthquakeService.getEarthquakeById(id).subscribe((data) => {
-  //     this.selectedEarthquake = data;
-  //   });
-  // }
 }

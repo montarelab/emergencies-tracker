@@ -123,10 +123,10 @@
       <p>Select the mode and time frame to view or predict earthquake data.</p>
 
       <mat-radio-group aria-label="Select an option" [(ngModel)]="mode">
-        <mat-radio-button style="display: block" value="1"
+        <mat-radio-button style="display: block" value="current"
           >Current</mat-radio-button
         >
-        <mat-radio-button style="display: block" value="2"
+        <mat-radio-button style="display: block" value="predict"
           >Predict</mat-radio-button
         >
       </mat-radio-group>
@@ -134,12 +134,8 @@
       <mat-form-field>
         <mat-label>Enter a date range</mat-label>
         <mat-date-range-input [rangePicker]="picker" [formGroup]="dateRange">
-          <input
-            matStartDate
-            placeholder="Start date"
-            formControlName="start"
-          />
-          <input matEndDate placeholder="End date" formControlName="end" />
+          <input matStartDate placeholder="Start date" formControlName="from" />
+          <input matEndDate placeholder="End date" formControlName="to" />
         </mat-date-range-input>
         <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle

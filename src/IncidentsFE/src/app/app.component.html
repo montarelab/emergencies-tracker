@@ -9,12 +9,17 @@
 
 <main class="main">
   <div class="content">
-    <!-- <p>control-panel works!</p> -->
     <div class="d-flex row">
-      <!-- <div class="col-2"></div> -->
-      <app-control-panel class="col-2"></app-control-panel>
-      <!-- <div class="col-10"></div> -->
-      <app-map-view class="col-10"></app-map-view>
+      <app-control-panel
+        (onSettingsChangedEvent)="applySettings($event)"
+        [defaultSettings]="savedSettings"
+        class="col-2"
+      ></app-control-panel>
+      <app-map-view
+        [earthquakes]="earthquakes"
+        [volcanoes]="volcanoes"
+        class="col-10"
+      ></app-map-view>
     </div>
   </div>
 </main>

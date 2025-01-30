@@ -23,3 +23,23 @@ export interface Earthquake {
   deaths: number;
   region: string;
 }
+
+export interface ControlPanelSavedState {
+  mode: ControlPanelModeState;
+  phenomenons: ControlPanelPhenomenonsState;
+}
+
+export interface ControlPanelPhenomenonsState {
+  volcanoes: boolean;
+  earthquakes: boolean;
+}
+
+export interface ControlPanelModeState {
+  mode: 'current' | 'predict';
+  dateRange: DateRange;
+}
+
+export interface DateRange {
+  from: Date;
+  to: Date;
+}
