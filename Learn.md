@@ -5,7 +5,7 @@
 To build it, run:
 
 ```
-docker build -f Dockerfile -t image_name
+docker build -f Dockerfile -t image_name .
 ```
 
 To start/stop a docker container
